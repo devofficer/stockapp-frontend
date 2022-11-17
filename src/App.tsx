@@ -11,12 +11,15 @@ import {
   Input,
   Button,
   Card,
+  Text,
+  useToast,
   Spinner,
   Heading,
   StackDivider,
   CardHeader, 
   CardBody, 
 } from "@chakra-ui/react"
+import { LOADING_STATUS } from './store/constants';
 import { getStockInfo } from "./store/reducers/stock";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
 import { ColorModeSwitcher } from "./ColorModeSwitcher"
@@ -27,13 +30,30 @@ export const App = () => {
   const status = useAppSelector((state) => state.main.status);
   const stockInfo = useAppSelector((state) => state.main.stockInfo);
 
+  const toast = useToast();
   const [ticker, setTicker] = React.useState<string>('');
   const handleSubmit = () => {
+    if(ticker === '') {
+      toast({
+        title: `Please input correct one`,
+        status: 'error',
+        isClosable: true,
+      });
+      return;
+    }
+
     dispatch(getStockInfo(ticker));
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTicker(e.target.value);
+  }
+
+  const getChangedTime = (delta: number) => {
+    const currentDate = new Date();
+    const currentTime = currentDate.getTime();
+    const changedDate = new Date(currentTime - delta);
+    return changedDate.toString();
   }
 
   return (
@@ -54,6 +74,14 @@ export const App = () => {
                     <Input placeholder='e.g AAPL, TSLA, AMZN' type='text' value={ ticker } onChange={ handleChange } />
                     <Button onClick={ handleSubmit }>Submit</Button>
                   </HStack>
+                  { status == LOADING_STATUS.LOADING && <Spinner mx="auto"/> }
+                  { (status == LOADING_STATUS.REJECTED || status == LOADING_STATUS.FAILED) && <Text fontSize="sm">No Information</Text> }
+                  { status == LOADING_STATUS.LOADED &&  <VStack>
+                      <Text fontSize="sm">Current Price: ${ stockInfo.c }</Text>
+                      <Text fontSize="sm">Percent Change: {stockInfo.dp}%</Text>
+                      <Text fontSize="sm">Updated Time: { getChangedTime(stockInfo.t) }</Text>
+                    </VStack>
+                  }
                 </Stack>
               </CardBody>
             </Card>

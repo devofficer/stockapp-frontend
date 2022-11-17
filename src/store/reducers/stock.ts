@@ -34,7 +34,7 @@ const initialState: DetailState = {
     pc: 0,
     t: 0
   },
-  status: LOADING_STATUS.LOADING,
+  status: LOADING_STATUS.REJECTED,
 }
 
 export const stockSlice = createSlice({
