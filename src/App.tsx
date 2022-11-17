@@ -65,8 +65,8 @@ export const App = () => {
             <Card>
               <CardBody>
                 <HStack alignItems="center" mb={5}>
-                  <Logo h="5vmin" pointerEvents="none" />
-                  <Heading size='md'>Stock App</Heading>
+                  <Logo id="logo" h="5vmin" pointerEvents="none" />
+                  <Heading id="title" size='md'>Stock App</Heading>
                 </HStack>
 
                 <Stack divider={<StackDivider />} spacing='2'>
@@ -75,7 +75,7 @@ export const App = () => {
                     <Button onClick={ handleSubmit }>Submit</Button>
                   </HStack>
                   { status == LOADING_STATUS.LOADING && <Spinner mx="auto"/> }
-                  { (status == LOADING_STATUS.REJECTED || status == LOADING_STATUS.FAILED) && <Text fontSize="sm">No Information</Text> }
+                  { (status == LOADING_STATUS.REJECTED || status == LOADING_STATUS.FAILED) && <Text id="no-information" fontSize="sm">No Information</Text> }
                   { status == LOADING_STATUS.LOADED &&  <VStack>
                       <Text fontSize="sm">Current Price: ${ stockInfo.c }</Text>
                       <Text fontSize="sm">Percent Change: {stockInfo.dp}%</Text>
