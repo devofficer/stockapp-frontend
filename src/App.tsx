@@ -10,24 +10,26 @@ import {
   HStack,
   Input,
   Button,
-  Card, 
+  Card,
+  Spinner,
   Heading,
   StackDivider,
   CardHeader, 
   CardBody, 
 } from "@chakra-ui/react"
+import { getStockInfo } from "./store/reducers/stock";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
 import { ColorModeSwitcher } from "./ColorModeSwitcher"
 import { Logo } from "./Logo"
 
 export const App = () => {
   const dispatch = useAppDispatch();
-  const status = useAppSelector((state) => state.main.status)
+  const status = useAppSelector((state) => state.main.status);
+  const stockInfo = useAppSelector((state) => state.main.stockInfo);
 
   const [ticker, setTicker] = React.useState<string>('');
   const handleSubmit = () => {
-    console.log(ticker);
-    console.log(status);
+    dispatch(getStockInfo(ticker));
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,7 +54,6 @@ export const App = () => {
                     <Input placeholder='e.g AAPL, TSLA, AMZN' type='text' value={ ticker } onChange={ handleChange } />
                     <Button onClick={ handleSubmit }>Submit</Button>
                   </HStack>
-                  
                 </Stack>
               </CardBody>
             </Card>

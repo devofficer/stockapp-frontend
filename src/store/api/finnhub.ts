@@ -6,7 +6,7 @@ import axios from 'axios';
  */
 const fetchStockInfo = async (ticker: string) => {
   /* eslint-disable-next-line camelcase */
-  return await axios.get('/stock', {params: { ticker: ticker }});
+  return await axios.get(`/stock/${ticker}`);
 }
 
 export { fetchStockInfo }
