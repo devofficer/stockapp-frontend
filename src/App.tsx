@@ -16,13 +16,18 @@ import {
   CardHeader, 
   CardBody, 
 } from "@chakra-ui/react"
+import { useAppDispatch, useAppSelector } from "./store/hooks";
 import { ColorModeSwitcher } from "./ColorModeSwitcher"
 import { Logo } from "./Logo"
 
 export const App = () => {
+  const dispatch = useAppDispatch();
+  const status = useAppSelector((state) => state.main.status)
+
   const [ticker, setTicker] = React.useState<string>('');
   const handleSubmit = () => {
-    alert(ticker);
+    console.log(ticker);
+    console.log(status);
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
